@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.List;
 
 
 @RestController
@@ -56,5 +56,10 @@ public class HelloController {
         //3.调用Service层
         return companyService.getCompanyById(id);
    
+    }
+
+    @GetMapping("/api/companies")
+    public List<Company> getCompanyList(){
+        return companyService.getCompanyList();
     }
 }
