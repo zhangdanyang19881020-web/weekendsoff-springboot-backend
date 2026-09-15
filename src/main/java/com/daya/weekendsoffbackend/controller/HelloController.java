@@ -4,6 +4,8 @@ import com.daya.weekendsoffbackend.entity.Company;
 import com.daya.weekendsoffbackend.service.CompanyService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -61,5 +63,10 @@ public class HelloController {
     @GetMapping("/api/companies")
     public List<Company> getCompanyList(){
         return companyService.getCompanyList();
+    }
+
+    @PostMapping("/api/companies")
+    public Company addCompany(@RequestBody Company company){
+        return companyService.addCompany(company);
     }
 }

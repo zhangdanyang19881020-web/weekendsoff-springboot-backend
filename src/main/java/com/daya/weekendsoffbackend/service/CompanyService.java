@@ -42,6 +42,7 @@ import java.util.List;
 
 @Service 
 public class CompanyService {
+    
     private final CompanyMapper companyMapper;
 
     public CompanyService(CompanyMapper companyMapper) {
@@ -54,5 +55,10 @@ public class CompanyService {
 
     public Company getCompanyById(Long id) {
         return companyMapper.getCompanyById(id);
+    }
+
+    public Company addCompany(Company company){
+        companyMapper.addCompany(company);
+        return company;
     }
 }

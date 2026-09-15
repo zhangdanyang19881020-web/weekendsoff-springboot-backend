@@ -1,7 +1,10 @@
 package com.daya.weekendsoffbackend.mapper;
 
 import com.daya.weekendsoffbackend.entity.Company;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,4 +20,19 @@ public interface CompanyMapper {
             SELECT id, name, weekends_off, city FROM company WHERE id = #{id}
             """)
     Company getCompanyById(Long id);
+
+    @Insert ("""
+                INSERT INTO company(
+                name,
+                weekends_off,
+                city
+            )
+                VALUES(
+                #{name},
+                #{weekendsOff},
+                #{city}
+                )
+            """)
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int addCompany(Company company);
 }
