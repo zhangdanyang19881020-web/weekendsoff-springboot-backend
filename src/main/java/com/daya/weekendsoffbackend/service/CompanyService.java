@@ -3,6 +3,7 @@ package com.daya.weekendsoffbackend.service;
 import com.daya.weekendsoffbackend.entity.Company;
 import com.daya.weekendsoffbackend.mapper.CompanyMapper;
 import org.springframework.stereotype.Service;
+import com.daya.weekendsoffbackend.exception.BusinessException;
 
 import java.util.List;
 
@@ -54,7 +55,11 @@ public class CompanyService {
     }
 
     public Company getCompanyById(Long id) {
-        return companyMapper.getCompanyById(id);
+        Company company = companyMapper.getCompanyById(id);
+        if (company == null) {
+            throw new BusinessException(404, "公司不存在");
+        }
+        return company;
     }
 
     public Company addCompany(Company company){
