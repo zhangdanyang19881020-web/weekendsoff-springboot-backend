@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.daya.weekendsoffbackend.common.Result;
 
+import jakarta.validation.Valid;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,8 +74,8 @@ public class HelloController {
     }
 
     @PostMapping("/api/companies")
-    public Company addCompany(@RequestBody Company company){
-        return companyService.addCompany(company);
+    public Result<Company> addCompany(@Valid @RequestBody Company company){
+        return Result.success(companyService.addCompany(company));
     }
 
     @PutMapping("/api/companies/{id}")

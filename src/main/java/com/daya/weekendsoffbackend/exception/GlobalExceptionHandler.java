@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
@@ -14,5 +16,16 @@ public class GlobalExceptionHandler {
                 e.getCode(),
                 e.getMessage()
         );
+    }
+
+    @ExceptionHandler (MethodArgumentNotValidException.class)
+    public Result<Object> handleValidationException(handleValidationException e) {
+        String message=e.getBindingResult().getFieldError().getDefaultMessage();
+        return Result.fail(400, message);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public Result<Object> handleException(Exception e) {
+        return Result.fail(500, "服务器错误");
     }
 }
