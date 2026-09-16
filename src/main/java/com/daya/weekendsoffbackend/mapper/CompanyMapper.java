@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Delete;
 
 import java.util.List;
 
@@ -28,11 +30,26 @@ public interface CompanyMapper {
                 city
             )
                 VALUES(
-                #{name},
-                #{weekendsOff},
-                #{city}
+                    #{name},
+                    #{weekendsOff},
+                    #{city}
                 )
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int addCompany(Company company);
+
+    @Update("""
+            UPDATE company
+            SET
+             name=#{name},
+             weekends_off=#{weekendsOff},
+             city=#{city}
+             WHERE id=#{id}
+            """)
+    int updateCompany(Company company);
+
+    @Delete("""
+            DELETE FROM company WHERE id = #{id}
+            """)
+    int deleteCompany(Long id);
 }

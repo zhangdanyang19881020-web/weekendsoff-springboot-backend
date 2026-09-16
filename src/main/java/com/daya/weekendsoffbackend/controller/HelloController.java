@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.PutMapping;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import com.daya.weekendsoffbackend.common.Result;
+
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -38,7 +45,7 @@ public class HelloController {
     }
 
     @GetMapping("api/company/{id}")
-    public Company getCompanyById(@PathVariable Long id){
+    public Result<Company> getCompanyById(@PathVariable Long id){
         //1.直接返回Map
         // Map<String,Object> company =new HashMap<>();
         // company.put("id",id);
@@ -56,17 +63,28 @@ public class HelloController {
         //return company;
 
         //3.调用Service层
-        return companyService.getCompanyById(id);
+        return Result.success(companyService.getCompanyById(id));
    
     }
 
     @GetMapping("/api/companies")
-    public List<Company> getCompanyList(){
-        return companyService.getCompanyList();
+    public Result<List<Company>> getCompanyList() {
+        return Result.success(companyService.getCompanyList());
     }
 
     @PostMapping("/api/companies")
     public Company addCompany(@RequestBody Company company){
         return companyService.addCompany(company);
+    }
+
+    @PutMapping("/api/companies/{id}")
+    public Result<Company> updateCompany(@PathVariable Long id, @RequestBody Company company){
+        company.setId(id);
+        return Result.success(companyService.updateCompany(company));
+    }   
+
+    @DeleteMapping("/api/companies/{id}")
+    public Result<Integer> deleteCompany(@PathVariable Long id){
+        return Result.success(companyService.deleteCompany(id));
     }
 }
