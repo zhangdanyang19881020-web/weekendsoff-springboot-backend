@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.daya.weekendsoffbackend.common.Result;
+import com.daya.weekendsoffbackend.dto.CompanyAddDTO;
 
 import jakarta.validation.Valid;
 
@@ -74,8 +75,14 @@ public class HelloController {
     }
 
     @PostMapping("/api/companies/addCompany")
-    public Result<Company> addCompany(@Valid @RequestBody Company company){
-        return Result.success(companyService.addCompany(company));
+    public Result<Company> addCompany(@Valid @RequestBody CompanyAddDTO dto){
+        Company company = new Company();
+        company.setName(dto.getName());
+        company.setCity(dto.getCity());
+        company.setWeekendsOff(Boolean.TRUE.equals(dto.getWeekendsOff()));
+        return Result.success(
+            companyService.addCompany(company)
+        );
     }
 
     @PutMapping("/api/companies/{id}")
