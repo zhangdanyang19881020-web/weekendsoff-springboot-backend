@@ -73,7 +73,7 @@ public class HelloController {
         return Result.success(companyService.getCompanyList());
     }
 
-    @PostMapping("/api/companies")
+    @PostMapping("/api/companies/addCompany")
     public Result<Company> addCompany(@Valid @RequestBody Company company){
         return Result.success(companyService.addCompany(company));
     }
