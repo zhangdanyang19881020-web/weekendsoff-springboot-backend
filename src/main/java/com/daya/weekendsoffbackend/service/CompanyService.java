@@ -1,12 +1,10 @@
 package com.daya.weekendsoffbackend.service;
 
+import com.daya.weekendsoffbackend.dto.PageResult;
 import com.daya.weekendsoffbackend.entity.Company;
 
-import java.util.List;
-
 public interface CompanyService {
-
-    List<Company> getCompanyList();
+    PageResult<Company> getCompanyList(Integer page, Integer pageSize);
     Company getCompanyById(Long id);
     Company addCompany(Company company);
     Company updateCompany(Company company);

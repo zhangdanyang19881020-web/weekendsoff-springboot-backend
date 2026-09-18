@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import com.daya.weekendsoffbackend.common.Result;
 import com.daya.weekendsoffbackend.dto.CompanyAddDTO;
 import com.daya.weekendsoffbackend.dto.CompanyResponseDTO;
 import com.daya.weekendsoffbackend.dto.CompanyUpdateDTO;
+import com.daya.weekendsoffbackend.dto.PageResult;
 
 import jakarta.validation.Valid;
 
@@ -80,8 +82,12 @@ public class HelloController {
     }
 
     @GetMapping("/api/companies")
-    public Result<List<Company>> getCompanyList() {
-        return Result.success(companyService.getCompanyList());
+    public Result<PageResult<Company>> getCompanyList(
+        @RequestParam(defaultValue = "1") Integer page,
+        @RequestParam(defaultValue = "10") Integer pageSize
+    ) {
+        PageResult<Company> pageResult = companyService.getCompanyList(page, pageSize);
+        return Result.success(pageResult);
     }
 
     @PostMapping("/api/companies/addCompany")

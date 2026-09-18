@@ -1,5 +1,6 @@
 package com.daya.weekendsoffbackend.service.impl;
 
+import com.daya.weekendsoffbackend.dto.PageResult;
 import com.daya.weekendsoffbackend.entity.Company;
 import com.daya.weekendsoffbackend.exception.BusinessException;
 import com.daya.weekendsoffbackend.mapper.CompanyMapper;
@@ -18,8 +19,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getCompanyList() {
-        return companyMapper.getCompanyList();
+    public PageResult<Company> getCompanyList(
+        Integer page,
+        Integer pageSize
+    ) {
+        Integer offset = (page - 1) * pageSize;
+        List<Company> companies = companyMapper.getCompanyList(offset, pageSize);
+        Long total = companyMapper.countCompanies();
+        return new PageResult<>(companies, total, page, pageSize);
     }
 
     @Override
