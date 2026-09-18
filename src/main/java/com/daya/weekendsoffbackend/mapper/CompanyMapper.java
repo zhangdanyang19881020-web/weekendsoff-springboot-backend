@@ -15,31 +15,41 @@ import java.util.List;
 @Mapper
 public interface CompanyMapper {
         @Select("""
-                        SELECT
-                           id,
-                           name,
-                           weekends_off,
-                           city
-                        FROM company
-                        LIMIT #{offset}, #{pageSize}
-                        """)
-        List<Company> getCompanyList(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
+                        <script>
+                                SELECT
+                                   id,
+                                   name,
+                                   weekends_off,
+                                   city
+                                FROM company
+                                WHERE 1=1
+                                <if test="city != null and city != ''">
+                                    AND city = #{city}
+                                </if>
+                                <if test="weekendsOff != null and weekendsOff != ''">
+                                    AND weekends_off = #{weekendsOff}
+                                </if>
+                                <if test="keyword != null and keyword != ''">
+                                    AND name LIKE CONCAT('%', #{keyword}, '%')
+                                </if>
+                                ORDER BY id DESC
 
-
+                                LIMIT #{offset}, #{pageSize}
+                                </script>
+                                """)
+        List<Company> getCompanyList(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize,
+                        @Param("city") String city, @Param("weekendsOff") Boolean weekendsOff,
+                        @Param("keyword") String keyword);
 
         @Select("""
                         SELECT COUNT(*) FROM company
                            """)
         Long countCompanies();
 
-
-
         @Select("""
                         SELECT id, name, weekends_off, city FROM company WHERE id = #{id}
                         """)
         Company getCompanyById(Long id);
-
-
 
         @Insert("""
                             INSERT INTO company(
@@ -56,8 +66,6 @@ public interface CompanyMapper {
         @Options(useGeneratedKeys = true, keyProperty = "id")
         int addCompany(Company company);
 
-
-
         @Update("""
                         UPDATE company
                         SET
@@ -67,8 +75,6 @@ public interface CompanyMapper {
                          WHERE id=#{id}
                         """)
         int updateCompany(Company company);
-
-        
 
         @Delete("""
                         DELETE FROM company WHERE id = #{id}

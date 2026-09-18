@@ -21,10 +21,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public PageResult<Company> getCompanyList(
         Integer page,
-        Integer pageSize
+        Integer pageSize,
+        String city,
+        Boolean weekendsOff,
+        String keyword
     ) {
         Integer offset = (page - 1) * pageSize;
-        List<Company> companies = companyMapper.getCompanyList(offset, pageSize);
+        List<Company> companies = companyMapper.getCompanyList(offset, pageSize,city,weekendsOff,keyword);
         Long total = companyMapper.countCompanies();
         return new PageResult<>(companies, total, page, pageSize);
     }

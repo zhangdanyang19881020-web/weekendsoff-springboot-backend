@@ -84,9 +84,12 @@ public class HelloController {
     @GetMapping("/api/companies")
     public Result<PageResult<Company>> getCompanyList(
         @RequestParam(defaultValue = "1") Integer page,
-        @RequestParam(defaultValue = "10") Integer pageSize
+        @RequestParam(defaultValue = "10") Integer pageSize,
+        @RequestParam (required = false) String city,
+        @RequestParam (required = false) Boolean weekendsOff,
+        @RequestParam (required = false) String keyword
     ) {
-        PageResult<Company> pageResult = companyService.getCompanyList(page, pageSize);
+        PageResult<Company> pageResult = companyService.getCompanyList(page, pageSize,city,weekendsOff,keyword);
         return Result.success(pageResult);
     }
 

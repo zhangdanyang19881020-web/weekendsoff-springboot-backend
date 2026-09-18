@@ -22,7 +22,8 @@ class CompanyServiceBeforeRefactor {
 
     public List<Company> getCompanyList() {
         // 备份代码：Mapper 已改为分页，此处仅示意
-        return companyMapper.getCompanyList(0, 100);
+        // return companyMapper.getCompanyList(0, 100,"","",null);
+        return null;
     }
 
     public Company getCompanyById(Long id) {
