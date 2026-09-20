@@ -1,5 +1,6 @@
 package com.daya.weekendsoffbackend.mapper;
 
+import com.daya.weekendsoffbackend.dto.CompanyQueryDTO;
 import com.daya.weekendsoffbackend.entity.Company;
 
 import org.apache.ibatis.annotations.Insert;
@@ -22,47 +23,40 @@ public interface CompanyMapper {
                                    weekends_off,
                                    city
                                 FROM company
-
                               <where>
-                                <if test="city != null and city != ''">
-                                    AND city = #{city}
+                                <if test="query.city != null and query.city != ''">
+                                    AND city = #{query.city}
                                 </if>
-                                <if test="weekendsOff != null and weekendsOff != ''">
-                                    AND weekends_off = #{weekendsOff}
+                                <if test="query.weekendsOff != null">
+                                    AND weekends_off = #{query.weekendsOff}
                                 </if>
-                                <if test="keyword != null and keyword != ''">
-                                    AND name LIKE CONCAT('%', #{keyword}, '%')
+                                <if test="query.keyword != null and query.keyword != ''">
+                                    AND name LIKE CONCAT('%', #{query.keyword}, '%')
                                 </if>
-                                  </where>
-
+                              </where>
                                 ORDER BY id DESC
-
-                                LIMIT #{offset}, #{pageSize}
+                                LIMIT #{offset}, #{query.pageSize}
                                 </script>
                                 """)
-        List<Company> getCompanyList(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize,
-                        @Param("city") String city, @Param("weekendsOff") Boolean weekendsOff,
-                        @Param("keyword") String keyword);
+        List<Company> getCompanyList(@Param("offset") Integer offset, @Param("query") CompanyQueryDTO query);
 
         @Select("""
                         <script>
                                 SELECT COUNT(*) FROM company
                                 <where>
-                                        <if test="city != null and city != ''">
-                                        AND city = #{city}
+                                        <if test="query.city != null and query.city != ''">
+                                        AND city = #{query.city}
                                         </if>
-                                        <if test="weekendsOff != null and weekendsOff != ''">
-                                        AND weekends_off = #{weekendsOff}
+                                        <if test="query.weekendsOff != null">
+                                        AND weekends_off = #{query.weekendsOff}
                                         </if>
-                                        <if test="keyword != null and keyword != ''">
-                                        AND name LIKE CONCAT('%', #{keyword}, '%')
+                                        <if test="query.keyword != null and query.keyword != ''">
+                                        AND name LIKE CONCAT('%', #{query.keyword}, '%')
                                         </if>
-                                        </where>
+                                </where>
                         </script>
                                    """)
-        Long countCompanies(@Param("city") String city,
-                        @Param("weekendsOff") Boolean weekendsOff,
-                        @Param("keyword") String keyword);
+        Long countCompanies(@Param("query") CompanyQueryDTO query);
 
         @Select("""
                         SELECT id, name, weekends_off, city FROM company WHERE id = #{id}

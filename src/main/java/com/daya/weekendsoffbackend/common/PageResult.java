@@ -1,4 +1,4 @@
-package com.daya.weekendsoffbackend.dto;
+package com.daya.weekendsoffbackend.common;
 
 import java.util.List;
 

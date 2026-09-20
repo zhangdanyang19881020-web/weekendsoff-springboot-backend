@@ -17,7 +17,8 @@ import com.daya.weekendsoffbackend.common.Result;
 import com.daya.weekendsoffbackend.dto.CompanyAddDTO;
 import com.daya.weekendsoffbackend.dto.CompanyResponseDTO;
 import com.daya.weekendsoffbackend.dto.CompanyUpdateDTO;
-import com.daya.weekendsoffbackend.dto.PageResult;
+import com.daya.weekendsoffbackend.common.PageResult;
+import com.daya.weekendsoffbackend.dto.CompanyQueryDTO;
 
 import jakarta.validation.Valid;
 
@@ -83,13 +84,14 @@ public class HelloController {
 
     @GetMapping("/api/companies")
     public Result<PageResult<Company>> getCompanyList(
-        @RequestParam(defaultValue = "1") Integer page,
-        @RequestParam(defaultValue = "10") Integer pageSize,
-        @RequestParam (required = false) String city,
-        @RequestParam (required = false) Boolean weekendsOff,
-        @RequestParam (required = false) String keyword
+        // @RequestParam(defaultValue = "1") Integer page,
+        // @RequestParam(defaultValue = "10") Integer pageSize,
+        // @RequestParam (required = false) String city,
+        // @RequestParam (required = false) Boolean weekendsOff,
+        // @RequestParam (required = false) String keyword
+        CompanyQueryDTO query
     ) {
-        PageResult<Company> pageResult = companyService.getCompanyList(page, pageSize,city,weekendsOff,keyword);
+        PageResult<Company> pageResult = companyService.getCompanyList(query);
         return Result.success(pageResult);
     }
 

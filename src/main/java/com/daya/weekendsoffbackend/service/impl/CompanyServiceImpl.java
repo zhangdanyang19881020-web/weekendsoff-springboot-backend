@@ -1,16 +1,16 @@
 package com.daya.weekendsoffbackend.service.impl;
 
-import com.daya.weekendsoffbackend.dto.PageResult;
+import com.daya.weekendsoffbackend.common.PageResult;
 import com.daya.weekendsoffbackend.entity.Company;
 import com.daya.weekendsoffbackend.exception.BusinessException;
 import com.daya.weekendsoffbackend.mapper.CompanyMapper;
 import com.daya.weekendsoffbackend.service.CompanyService;
 import org.springframework.stereotype.Service;
+import com.daya.weekendsoffbackend.dto.CompanyQueryDTO;
 
 import java.util.List;
 
-
-@Service  
+@Service
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyMapper companyMapper;
 
@@ -20,25 +20,20 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public PageResult<Company> getCompanyList(
-        Integer page,
-        Integer pageSize,
-        String city,
-        Boolean weekendsOff,
-        String keyword
-    ) {
-        Integer offset = (page - 1) * pageSize;
-        List<Company> companies = companyMapper.getCompanyList(offset, pageSize,city,weekendsOff,keyword);
-        Long total = companyMapper.countCompanies();
-        return new PageResult<>(companies, total, page, pageSize);
+            CompanyQueryDTO query) {
+        Integer offset = (query.getPage() - 1) * query.getPageSize();
+        List<Company> companies = companyMapper.getCompanyList(offset, query);
+        Long total = companyMapper.countCompanies(query);
+        return new PageResult<>(companies, total, query.getPage(), query.getPageSize());
     }
 
     @Override
     public Company getCompanyById(Long id) {
-       Company company = companyMapper.getCompanyById(id);
-       if (company == null) {
-        throw new BusinessException(404, "公司不存在");
-       }
-       return company;
+        Company company = companyMapper.getCompanyById(id);
+        if (company == null) {
+            throw new BusinessException(404, "公司不存在");
+        }
+        return company;
     }
 
     @Override
@@ -50,7 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company updateCompany(Company company) {
         companyMapper.updateCompany(company);
-        return company; 
+        return company;
     }
 
     @Override
