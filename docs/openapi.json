@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "weekendsoff-backend",
-        "description": "公司双休查询后端 API（可导入 Apipost / Apifox）",
+        "description": "\u516c\u53f8\u53cc\u4f11\u67e5\u8be2\u540e\u7aef API\uff08\u53ef\u5bfc\u5165 Apipost / Apifox\uff09",
         "version": "0.0.1-SNAPSHOT"
     },
     "servers": [
@@ -11,22 +11,32 @@
             "description": "Generated server url"
         }
     ],
+    "tags": [
+        {
+            "name": "\u516c\u53f8",
+            "description": "\u516c\u53f8\u67e5\u8be2\u4e0e CRUD"
+        }
+    ],
     "paths": {
         "/api/companies/{id}": {
             "put": {
                 "tags": [
-                    "company-controller"
+                    "\u516c\u53f8"
                 ],
+                "summary": "\u66f4\u65b0\u516c\u53f8",
+                "description": "\u516c\u53f8 ID \u653e\u5728\u8def\u5f84\u4e0a\uff0cbody \u4e2d\u4e0d\u9700\u8981 id",
                 "operationId": "updateCompany",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "\u516c\u53f8 ID",
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64"
-                        }
+                        },
+                        "example": 6
                     }
                 ],
                 "requestBody": {
@@ -54,18 +64,21 @@
             },
             "delete": {
                 "tags": [
-                    "company-controller"
+                    "\u516c\u53f8"
                 ],
+                "summary": "\u5220\u9664\u516c\u53f8",
                 "operationId": "deleteCompany",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "\u516c\u53f8 ID",
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64"
-                        }
+                        },
+                        "example": 6
                     }
                 ],
                 "responses": {
@@ -85,8 +98,9 @@
         "/api/companies/addCompany": {
             "post": {
                 "tags": [
-                    "company-controller"
+                    "\u516c\u53f8"
                 ],
+                "summary": "\u65b0\u589e\u516c\u53f8",
                 "operationId": "addCompany",
                 "requestBody": {
                     "content": {
@@ -115,8 +129,10 @@
         "/api/company": {
             "get": {
                 "tags": [
-                    "company-controller"
+                    "\u516c\u53f8"
                 ],
+                "summary": "\u793a\u4f8b\u516c\u53f8\uff08\u6f14\u793a\uff09",
+                "description": "\u8fd4\u56de\u786c\u7f16\u7801 Map\uff0c\u4ec5\u7528\u4e8e\u5b66\u4e60\u6f14\u793a",
                 "operationId": "getCompany",
                 "responses": {
                     "200": {
@@ -136,18 +152,21 @@
         "/api/company/{id}": {
             "get": {
                 "tags": [
-                    "company-controller"
+                    "\u516c\u53f8"
                 ],
+                "summary": "\u6309 ID \u67e5\u8be2\u516c\u53f8",
                 "operationId": "getCompanyById",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "\u516c\u53f8 ID",
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64"
-                        }
+                        },
+                        "example": 1
                     }
                 ],
                 "responses": {
@@ -167,15 +186,16 @@
         "/api/companies": {
             "get": {
                 "tags": [
-                    "company-controller"
+                    "\u516c\u53f8"
                 ],
                 "summary": "\u83b7\u53d6\u516c\u53f8\u5217\u8868",
-                "description": "\u6839\u636e\u9875\u7801\u548c\u6bcf\u9875\u6570\u91cf\u67e5\u8be2\u516c\u53f8\u5217\u8868",
+                "description": "\u5206\u9875\u67e5\u8be2\uff0c\u652f\u6301\u6309\u57ce\u5e02\u3001\u662f\u5426\u53cc\u4f11\u3001\u540d\u79f0\u5173\u952e\u8bcd\u7b5b\u9009",
                 "operationId": "getCompanyList",
                 "parameters": [
                     {
                         "name": "query",
                         "in": "query",
+                        "description": "\u67e5\u8be2\u6761\u4ef6\uff08Query \u53c2\u6570\uff09",
                         "required": true,
                         "schema": {
                             "$ref": "#/components/schemas/CompanyQueryDTO"
@@ -201,18 +221,25 @@
         "schemas": {
             "CompanyUpdateDTO": {
                 "type": "object",
+                "description": "\u8981\u66f4\u65b0\u7684\u516c\u53f8\u4fe1\u606f",
                 "properties": {
                     "name": {
                         "type": "string",
+                        "description": "\u516c\u53f8\u540d\u79f0",
+                        "example": "\u5468\u5927\u6f20\u516c\u53f8",
                         "maxLength": 100,
                         "minLength": 0
                     },
                     "city": {
                         "type": "string",
+                        "description": "\u6240\u5728\u57ce\u5e02",
+                        "example": "\u4e0a\u6d77",
                         "minLength": 1
                     },
                     "weekendsOff": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "\u662f\u5426\u53cc\u4f11",
+                        "example": true
                     }
                 },
                 "required": [
@@ -236,18 +263,25 @@
             },
             "CompanyAddDTO": {
                 "type": "object",
+                "description": "\u65b0\u589e\u516c\u53f8\u4fe1\u606f",
                 "properties": {
                     "name": {
                         "type": "string",
+                        "description": "\u516c\u53f8\u540d\u79f0",
+                        "example": "\u5f20\u5927\u7259\u79d1\u6280\u6709\u9650\u516c\u53f8",
                         "maxLength": 100,
                         "minLength": 0
                     },
                     "city": {
                         "type": "string",
+                        "description": "\u6240\u5728\u57ce\u5e02",
+                        "example": "\u821f\u5c71",
                         "minLength": 1
                     },
                     "weekendsOff": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "\u662f\u5426\u53cc\u4f11",
+                        "example": true
                     }
                 },
                 "required": [
@@ -308,19 +342,28 @@
             },
             "CompanyResponseDTO": {
                 "type": "object",
+                "description": "\u516c\u53f8\u4fe1\u606f\uff08\u54cd\u5e94\uff09",
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int64"
+                        "format": "int64",
+                        "description": "\u516c\u53f8 ID",
+                        "example": 1
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "\u516c\u53f8\u540d\u79f0",
+                        "example": "\u5b81\u6ce2\u6d4b\u8bd5\u79d1\u6280\u6709\u9650\u516c\u53f8"
                     },
                     "city": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "\u6240\u5728\u57ce\u5e02",
+                        "example": "\u5b81\u6ce2"
                     },
                     "weekendsOff": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "\u662f\u5426\u53cc\u4f11",
+                        "example": true
                     }
                 }
             },
@@ -341,23 +384,36 @@
             },
             "CompanyQueryDTO": {
                 "type": "object",
+                "description": "\u516c\u53f8\u5217\u8868\u67e5\u8be2\u53c2\u6570\uff08Query\uff09",
                 "properties": {
                     "page": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "default": 1,
+                        "description": "\u9875\u7801\uff0c\u4ece 1 \u5f00\u59cb",
+                        "example": 1
                     },
                     "pageSize": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "default": 10,
+                        "description": "\u6bcf\u9875\u6761\u6570",
+                        "example": 10
                     },
                     "city": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "\u57ce\u5e02\uff08\u7cbe\u786e\u5339\u914d\uff09",
+                        "example": "\u5b81\u6ce2"
                     },
                     "weekendsOff": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "\u662f\u5426\u53cc\u4f11",
+                        "example": true
                     },
                     "keyword": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "\u516c\u53f8\u540d\u79f0\u5173\u952e\u8bcd\uff08\u6a21\u7cca\u5339\u914d\uff09",
+                        "example": "\u79d1\u6280"
                     }
                 }
             },
