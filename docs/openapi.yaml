@@ -9,24 +9,9 @@ servers:
     description: 本地开发
 
 tags:
-  - name: Hello
   - name: Company
 
 paths:
-  /api/hello:
-    get:
-      tags: [Hello]
-      summary: 健康问候
-      operationId: hello
-      responses:
-        "200":
-          description: 纯文本
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: "Hello, World!"
-
   /api/company:
     get:
       tags: [Company]

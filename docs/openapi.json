@@ -1,511 +1,420 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "weekendsoff-backend",
-    "description": "公司双休查询后端 API（可导入 Apifox / Postman）",
-    "version": "0.0.1-SNAPSHOT"
-  },
-  "servers": [
-    {
-      "url": "http://127.0.0.1:8080",
-      "description": "本地开发"
-    }
-  ],
-  "tags": [
-    {
-      "name": "Hello"
+    "openapi": "3.1.0",
+    "info": {
+        "title": "weekendsoff-backend",
+        "description": "公司双休查询后端 API（可导入 Apipost / Apifox）",
+        "version": "0.0.1-SNAPSHOT"
     },
-    {
-      "name": "Company"
-    }
-  ],
-  "paths": {
-    "/api/hello": {
-      "get": {
-        "tags": [
-          "Hello"
-        ],
-        "summary": "健康问候",
-        "operationId": "hello",
-        "responses": {
-          "200": {
-            "description": "纯文本",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string",
-                  "example": "Hello, World!"
-                }
-              }
-            }
-          }
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8080",
+            "description": "Generated server url"
         }
-      }
-    },
-    "/api/company": {
-      "get": {
-        "tags": [
-          "Company"
-        ],
-        "summary": "示例公司（硬编码 Map，演示用）",
-        "operationId": "getCompanyDemo",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": true
+    ],
+    "paths": {
+        "/api/companies/{id}": {
+            "put": {
+                "tags": [
+                    "company-controller"
+                ],
+                "operationId": "updateCompany",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompanyUpdateDTO"
+                            }
+                        }
+                    },
+                    "required": true
                 },
-                "example": {
-                  "id": 1,
-                  "name": "宁波测试科技有限公司",
-                  "weekendsOff": true,
-                  "city": "宁波"
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultVoid"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/company/{id}": {
-      "get": {
-        "tags": [
-          "Company"
-        ],
-        "summary": "按 ID 查询公司",
-        "operationId": "getCompanyById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultCompanyResponseDTO"
+            },
+            "delete": {
+                "tags": [
+                    "company-controller"
+                ],
+                "operationId": "deleteCompany",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultInteger"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "404": {
-            "description": "公司不存在（业务 code 404）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultFail"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/companies": {
-      "get": {
-        "tags": [
-          "Company"
-        ],
-        "summary": "公司分页列表（支持筛选）",
-        "operationId": "getCompanyList",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "页码，从 1 开始",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "每页条数",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          },
-          {
-            "name": "city",
-            "in": "query",
-            "description": "城市精确匹配",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "weekendsOff",
-            "in": "query",
-            "description": "是否双休",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "keyword",
-            "in": "query",
-            "description": "公司名称模糊搜索",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultPageCompany"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/companies/addCompany": {
-      "post": {
-        "tags": [
-          "Company"
-        ],
-        "summary": "新增公司",
-        "operationId": "addCompany",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyAddDTO"
-              },
-              "example": {
-                "name": "张大牙",
-                "city": "舟山",
-                "weekendsOff": true
-              }
-            }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultCompany"
+        "/api/companies/addCompany": {
+            "post": {
+                "tags": [
+                    "company-controller"
+                ],
+                "operationId": "addCompany",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompanyAddDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultCompany"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "参数校验失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultFail"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/companies/{id}": {
-      "put": {
-        "tags": [
-          "Company"
-        ],
-        "summary": "更新公司（ID 在路径）",
-        "operationId": "updateCompany",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyUpdateDTO"
-              },
-              "example": {
-                "name": "周大漠公司",
-                "city": "上海",
-                "weekendsOff": true
-              }
-            }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "成功，data 为 null",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultVoid"
+        "/api/company": {
+            "get": {
+                "tags": [
+                    "company-controller"
+                ],
+                "operationId": "getCompany",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "参数校验失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultFail"
+        },
+        "/api/company/{id}": {
+            "get": {
+                "tags": [
+                    "company-controller"
+                ],
+                "operationId": "getCompanyById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultCompanyResponseDTO"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
+        },
+        "/api/companies": {
+            "get": {
+                "tags": [
+                    "company-controller"
+                ],
+                "summary": "\u83b7\u53d6\u516c\u53f8\u5217\u8868",
+                "description": "\u6839\u636e\u9875\u7801\u548c\u6bcf\u9875\u6570\u91cf\u67e5\u8be2\u516c\u53f8\u5217\u8868",
+                "operationId": "getCompanyList",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/CompanyQueryDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultPageResultCompany"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      },
-      "delete": {
-        "tags": [
-          "Company"
-        ],
-        "summary": "删除公司",
-        "operationId": "deleteCompany",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功，data 为影响行数",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultInteger"
+    },
+    "components": {
+        "schemas": {
+            "CompanyUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "city": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "weekendsOff": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "city",
+                    "name",
+                    "weekendsOff"
+                ]
+            },
+            "ResultVoid": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {}
                 }
-              }
+            },
+            "CompanyAddDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "city": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "weekendsOff": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "city",
+                    "name",
+                    "weekendsOff"
+                ]
+            },
+            "Company": {
+                "type": "object",
+                "description": "\u516c\u53f8\u4fe1\u606f",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "\u516c\u53f8ID",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "\u516c\u53f8\u540d\u79f0",
+                        "example": "\u516c\u53f81",
+                        "maxLength": 100,
+                        "minLength": 2
+                    },
+                    "weekendsOff": {
+                        "type": "boolean",
+                        "description": "\u662f\u5426\u53cc\u4f11",
+                        "example": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "description": "\u57ce\u5e02",
+                        "example": "\u5317\u4eac",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "city",
+                    "name",
+                    "weekendsOff"
+                ]
+            },
+            "ResultCompany": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Company"
+                    }
+                }
+            },
+            "CompanyResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "weekendsOff": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ResultCompanyResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/CompanyResponseDTO"
+                    }
+                }
+            },
+            "CompanyQueryDTO": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "weekendsOff": {
+                        "type": "boolean"
+                    },
+                    "keyword": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PageResultCompany": {
+                "type": "object",
+                "properties": {
+                    "list": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Company"
+                        }
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "ResultPageResultCompany": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PageResultCompany"
+                    }
+                }
+            },
+            "ResultInteger": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
             }
-          }
         }
-      }
     }
-  },
-  "components": {
-    "schemas": {
-      "ResultFail": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 400
-          },
-          "message": {
-            "type": "string",
-            "example": "公司名称不能为空"
-          },
-          "data": {
-            "nullable": true
-          }
-        }
-      },
-      "Company": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "weekendsOff": {
-            "type": "boolean"
-          },
-          "city": {
-            "type": "string"
-          }
-        }
-      },
-      "CompanyResponseDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "weekendsOff": {
-            "type": "boolean"
-          },
-          "city": {
-            "type": "string"
-          }
-        }
-      },
-      "CompanyAddDTO": {
-        "type": "object",
-        "required": [
-          "name",
-          "city",
-          "weekendsOff"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 100
-          },
-          "city": {
-            "type": "string"
-          },
-          "weekendsOff": {
-            "type": "boolean"
-          }
-        }
-      },
-      "CompanyUpdateDTO": {
-        "type": "object",
-        "required": [
-          "name",
-          "city",
-          "weekendsOff"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 100
-          },
-          "city": {
-            "type": "string"
-          },
-          "weekendsOff": {
-            "type": "boolean"
-          }
-        }
-      },
-      "PageResultCompany": {
-        "type": "object",
-        "properties": {
-          "list": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Company"
-            }
-          },
-          "total": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "page": {
-            "type": "integer"
-          },
-          "pageSize": {
-            "type": "integer"
-          }
-        }
-      },
-      "ResultCompany": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Company"
-          }
-        }
-      },
-      "ResultCompanyResponseDTO": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          },
-          "data": {
-            "$ref": "#/components/schemas/CompanyResponseDTO"
-          }
-        }
-      },
-      "ResultPageCompany": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          },
-          "data": {
-            "$ref": "#/components/schemas/PageResultCompany"
-          }
-        }
-      },
-      "ResultVoid": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          },
-          "data": {
-            "nullable": true
-          }
-        }
-      },
-      "ResultInteger": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          },
-          "data": {
-            "type": "integer"
-          }
-        }
-      }
-    }
-  }
 }

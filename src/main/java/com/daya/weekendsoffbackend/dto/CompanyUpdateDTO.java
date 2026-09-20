@@ -1,17 +1,23 @@
 package com.daya.weekendsoffbackend.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+@Schema(description = "更新公司请求体（公司 ID 在 URL 路径上，不在 body 里）")
 public class CompanyUpdateDTO {
+
+    @Schema(description = "公司名称", example = "周大漠公司", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "公司名称不能为空")
     @Size(max = 100, message = "公司名称不能超过100个字符")
     private String name;
 
+    @Schema(description = "所在城市", example = "上海", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "城市不能为空")
     private String city;
 
+    @Schema(description = "是否双休", example = "true", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "是否双休不能为空")
     private Boolean weekendsOff;
 
