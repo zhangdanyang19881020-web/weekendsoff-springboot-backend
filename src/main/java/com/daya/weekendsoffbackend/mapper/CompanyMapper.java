@@ -22,7 +22,8 @@ public interface CompanyMapper {
                                    weekends_off,
                                    city
                                 FROM company
-                                WHERE 1=1
+
+                              <where>
                                 <if test="city != null and city != ''">
                                     AND city = #{city}
                                 </if>
@@ -32,6 +33,8 @@ public interface CompanyMapper {
                                 <if test="keyword != null and keyword != ''">
                                     AND name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>
+                                  </where>
+
                                 ORDER BY id DESC
 
                                 LIMIT #{offset}, #{pageSize}
@@ -42,9 +45,24 @@ public interface CompanyMapper {
                         @Param("keyword") String keyword);
 
         @Select("""
-                        SELECT COUNT(*) FROM company
-                           """)
-        Long countCompanies();
+                        <script>
+                                SELECT COUNT(*) FROM company
+                                <where>
+                                        <if test="city != null and city != ''">
+                                        AND city = #{city}
+                                        </if>
+                                        <if test="weekendsOff != null and weekendsOff != ''">
+                                        AND weekends_off = #{weekendsOff}
+                                        </if>
+                                        <if test="keyword != null and keyword != ''">
+                                        AND name LIKE CONCAT('%', #{keyword}, '%')
+                                        </if>
+                                        </where>
+                        </script>
+                                   """)
+        Long countCompanies(@Param("city") String city,
+                        @Param("weekendsOff") Boolean weekendsOff,
+                        @Param("keyword") String keyword);
 
         @Select("""
                         SELECT id, name, weekends_off, city FROM company WHERE id = #{id}
