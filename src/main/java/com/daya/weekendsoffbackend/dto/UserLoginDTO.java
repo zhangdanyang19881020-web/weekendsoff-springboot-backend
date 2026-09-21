@@ -4,9 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@Schema(description = "用户注册请求体")
-public class UserRegisterDTO {
-
+@Schema(description = "用户登录请求体") 
+public class UserLoginDTO {
     @Schema(description = "用户名，3-20 位", example = "zhangdaya", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "用户名不能为空")
     @Size(min = 3, max = 20, message = "用户名长度为3-20位")
@@ -17,9 +16,6 @@ public class UserRegisterDTO {
     @Size(min = 6, max = 30, message = "密码长度为6-30位")
     private String password;
 
-    @Schema(description = "昵称（可选）", example = "大牙")
-    private String nickname;
-
     public String getUsername() {
         return username;
     }
@@ -28,15 +24,8 @@ public class UserRegisterDTO {
     }
     public String getPassword() {
         return password;
-    }   
+    }
     public void setPassword(String password) {
         this.password = password;
-    }
-    public String getNickname() {
-        return nickname;
-    }
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
+    }   
 }

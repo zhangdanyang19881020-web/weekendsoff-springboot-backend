@@ -6,19 +6,30 @@ public class User {
     private String username;
     private String password;
     private String nickname;
+    private String avatarUrl;
     private LocalDateTime createdAt;
+
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getUsername() {
         return username;
     }
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -32,6 +43,7 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+    
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

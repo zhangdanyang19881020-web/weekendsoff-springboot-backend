@@ -1,13 +1,18 @@
 package com.daya.weekendsoffbackend.exception;
 
 import com.daya.weekendsoffbackend.common.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(BusinessException.class)
     public Result<Object> handleBusinessException(BusinessException e) {
         return Result.fail(
@@ -23,8 +28,14 @@ public class GlobalExceptionHandler {
         return Result.fail(400, message);
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public Result<Object> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+        return Result.fail(400, "路径参数格式错误，请将 {id} 改为数字，例如 /api/companies/6");
+    }
+
     @ExceptionHandler(Exception.class)
     public Result<Object> handleException(Exception e) {
+        log.error("Unhandled exception", e);
         return Result.fail(500, "服务器错误");
     }
 }
