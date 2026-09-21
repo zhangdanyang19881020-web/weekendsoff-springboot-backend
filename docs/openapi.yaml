@@ -66,6 +66,7 @@ paths:
       tags:
       - 用户
       summary: 更新用户头像
+      description: "需在 Header 添加 Authorization: Bearer 登录返回的 token"
       operationId: updateAvatar
       parameters:
       - name: userId

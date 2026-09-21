@@ -104,6 +104,7 @@
                     "\u7528\u6237"
                 ],
                 "summary": "\u66f4\u65b0\u7528\u6237\u5934\u50cf",
+                "description": "\u9700\u5728 Header \u6dfb\u52a0 Authorization: Bearer \u767b\u5f55\u8fd4\u56de\u7684 token",
                 "operationId": "updateAvatar",
                 "parameters": [
                     {
