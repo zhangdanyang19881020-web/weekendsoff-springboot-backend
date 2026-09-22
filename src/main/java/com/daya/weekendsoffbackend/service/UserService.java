@@ -7,6 +7,8 @@ import com.daya.weekendsoffbackend.entity.User;
 import com.daya.weekendsoffbackend.exception.BusinessException;
 import com.daya.weekendsoffbackend.mapper.UserMapper;
 import com.daya.weekendsoffbackend.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,8 @@ import java.util.UUID;
 
 @Service
 public class UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
@@ -52,6 +56,15 @@ public class UserService {
             throw new BusinessException(400, "头像文件不能为空");
         }
         try {
+            // 类似前端 console.log(file)：在运行 spring-boot:run 的终端里查看
+            log.info(
+                    "上传头像原文件: userId={}, originalFilename={}, size={} bytes, contentType={}, empty={}",
+                    userId,
+                    file.getOriginalFilename(),
+                    file.getSize(),
+                    file.getContentType(),
+                    file.isEmpty());
+
             Files.createDirectories(uploadDir);
             String ext = "";
             String original = file.getOriginalFilename();
@@ -63,6 +76,7 @@ public class UserService {
             Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
             String avatarUrl = "/uploads/" + filename;
             userMapper.updateUserAvatar(userId, avatarUrl);
+            log.info("头像已保存: diskPath={}, avatarUrl={}", target.toAbsolutePath(), avatarUrl);
             return avatarUrl;
         } catch (IOException e) {
             throw new BusinessException(500, "头像上传失败");
