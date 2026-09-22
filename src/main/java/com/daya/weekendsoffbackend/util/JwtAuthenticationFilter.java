@@ -29,11 +29,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.objectMapper = objectMapper;
     }
 
+    /** 静态头像等：浏览器直接打开 URL，不带 token */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
+        String path = request.getServletPath();
+        if (path == null || path.isEmpty()) {
+            path = request.getRequestURI();
+        }
         return path.startsWith("/api/users/login")
                 || path.startsWith("/api/users/register")
+                || path.startsWith("/uploads")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs");
     }
