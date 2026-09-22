@@ -203,6 +203,59 @@
                 }
             }
         },
+        "/api/users/avatar": {
+            "post": {
+                "tags": [
+                    "\u7528\u6237"
+                ],
+                "summary": "\u4e0a\u4f20\u5934\u50cf",
+                "description": "\u4e0a\u4f20\u5934\u50cf\u6587\u4ef6\uff0c\u6210\u529f\u540e\u8fd4\u56de\u5934\u50cf\u8bbf\u95ee\u8def\u5f84",
+                "operationId": "uploadAvatar",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "description": "\u7528\u6237 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "\u5934\u50cf\u6587\u4ef6"
+                                    }
+                                },
+                                "required": [
+                                    "file"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultString"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/companies/addCompany": {
             "post": {
                 "tags": [
@@ -476,6 +529,21 @@
                     },
                     "data": {
                         "$ref": "#/components/schemas/LoginResponseDTO"
+                    }
+                }
+            },
+            "ResultString": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "string"
                     }
                 }
             },

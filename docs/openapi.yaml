@@ -127,6 +127,40 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ResultLoginResponseDTO"
+  /api/users/avatar:
+    post:
+      tags:
+      - 用户
+      summary: 上传头像
+      description: 上传头像文件，成功后返回头像访问路径
+      operationId: uploadAvatar
+      parameters:
+      - name: userId
+        in: query
+        description: 用户 ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 头像文件
+              required:
+              - file
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResultString"
   /api/companies/addCompany:
     post:
       tags:
@@ -321,6 +355,16 @@ components:
           type: string
         data:
           $ref: "#/components/schemas/LoginResponseDTO"
+    ResultString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: string
     CompanyAddDTO:
       type: object
       description: 新增公司信息
